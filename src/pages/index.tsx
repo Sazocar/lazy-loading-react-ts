@@ -1,6 +1,20 @@
+import RandomCard from '@/components/RandomCard'
 import Head from 'next/head'
 
-export default function Home() {
+export const getStaticProps = async () => {
+  const response = await fetch(
+    'https://db.ygoprodeck.com/api/v7/randomcard.php'
+  )
+  const yugiCard: TCard = await response.json()
+
+  return {
+    props: {
+      yugiCard,
+    },
+  }
+}
+
+const Home = ({ yugiCard }: { yugiCard: TCard }) => {
   return (
     <>
       <Head>
@@ -10,10 +24,12 @@ export default function Home() {
         <link rel='icon' href='/favicon.ico' />
       </Head>
 
-      <main>
+      <main className='pt-6 grid place-content-center text-center'>
         <h1 className='text-3xl font-bold underline'>Hello world!</h1>
+        <RandomCard yugiCard={yugiCard} />
       </main>
     </>
   )
 }
 
+export default Home
