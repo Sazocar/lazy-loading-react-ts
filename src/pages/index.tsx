@@ -1,20 +1,28 @@
+import { useEffect, useState } from 'react'
+import type { MouseEventHandler } from 'react'
 import RandomCard from '@/components/RandomCard'
 import Head from 'next/head'
 
-export const getStaticProps = async () => {
+export const getCardFromAPI = async () => {
   const response = await fetch(
     'https://db.ygoprodeck.com/api/v7/randomcard.php'
   )
   const yugiCard: TCard = await response.json()
-
-  return {
-    props: {
-      yugiCard,
-    },
-  }
+  return yugiCard
 }
 
-const Home = ({ yugiCard }: { yugiCard: TCard }) => {
+const Home = () => {
+  const [images, setImages] = useState<Array<TCard>>([])
+
+  const addNewCard: MouseEventHandler<HTMLButtonElement> = async (event) => {
+    const card: TCard = await getCardFromAPI()
+    setImages([...images, card])
+  }
+
+  // useEffect(() => {
+  //   addNewCard()
+  // }, [])
+
   return (
     <>
       <Head>
@@ -25,11 +33,24 @@ const Home = ({ yugiCard }: { yugiCard: TCard }) => {
       </Head>
 
       <main className='pt-6 grid place-content-center text-center'>
-        <h1 className='text-3xl font-bold underline'>Hello world!</h1>
-        <RandomCard yugiCard={yugiCard} />
+        <h1 className='text-3xl font-bold underline'>
+          Random YugiOh Card Generator
+        </h1>
+        <div className='container w-80 mx-auto'>
+          <button
+            onClick={addNewCard}
+            className='w-full mt-6 text-slate-50 p-2 bg-sky-500/100 rounded-md'
+          >
+            Add new YugiOh card
+          </button>
+        </div>
+        {images.map(({ id, card_images }) => (
+          <RandomCard key={id} cardImage={card_images[0].image_url} />
+        ))}
       </main>
     </>
   )
 }
 
 export default Home
+

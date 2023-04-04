@@ -1,17 +1,15 @@
 import Image from 'next/image'
 
-const RandomCard = ({ yugiCard }: { yugiCard: TCard }): JSX.Element => {
-  const { card_images } = yugiCard
-  const { name } = yugiCard
-
+const RandomCard = ({ cardImage }: { cardImage: Url }): JSX.Element => {
   return (
     <Image
-      className='pt-6'
+      src={cardImage}
+      alt={cardImage}
       priority
-      width={330}
-      height={330}
-      src={card_images[0].image_url}
-      alt={name}
+      width='0'
+      height='0'
+      sizes='100vw'
+      className='p-6 w-screen lg:w-full h-auto'
     />
   )
 }
