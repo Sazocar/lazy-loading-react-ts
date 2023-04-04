@@ -25,14 +25,14 @@ const RandomCard = ({ cardImage }: { cardImage: Url }): JSX.Element => {
   }, [cardImage])
 
   return (
-    <img
+    <Image
       ref={node}
       src={src}
       alt={cardImage}
-      // priority
-      // width='0'
-      // height='0'
-      // sizes='100vw'
+      priority
+      width='0'
+      height='0'
+      sizes='100vw'
       className='w-screen lg:w-full h-auto bg-gray-300'
     />
   )
