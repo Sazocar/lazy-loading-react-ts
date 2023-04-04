@@ -45,7 +45,9 @@ const Home = () => {
           </button>
         </div>
         {images.map(({ id, card_images }) => (
-          <RandomCard key={id} cardImage={card_images[0].image_url} />
+          <div className='pt-4' key={id}>
+            <RandomCard cardImage={card_images[0].image_url} />
+          </div>
         ))}
       </main>
     </>
