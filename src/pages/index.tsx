@@ -3,6 +3,7 @@ import type { MouseEventHandler } from 'react'
 import RandomCard from '@/components/RandomCard'
 import Head from 'next/head'
 import Header from '@/components/Header'
+import AddButton from '@/components/AddButton'
 
 export const getCardFromAPI = async () => {
   const response = await fetch(
@@ -14,10 +15,14 @@ export const getCardFromAPI = async () => {
 
 const Home = () => {
   const [images, setImages] = useState<Array<TCard>>([])
+  const [loading, setLoading] = useState<boolean>(false)
 
   const addNewCard: MouseEventHandler<HTMLButtonElement> = async (event) => {
+    setLoading(true)
     const card: TCard = await getCardFromAPI()
     setImages([...images, card])
+    setTimeout(() => {}, 1000)
+    setLoading(false)
   }
 
   return (
@@ -35,12 +40,7 @@ const Home = () => {
       <main className='pt-6 grid place-content-center text-center'>
         <Header />
         <div className='container w-80 mx-auto'>
-          <button
-            onClick={addNewCard}
-            className='w-full mt-6 text-slate-50 p-2 bg-sky-500/100 rounded-md'
-          >
-            Add new Yu-Gi-Oh! card
-          </button>
+          <AddButton addNewCard={addNewCard} loading={loading} />
         </div>
         {images.map(({ id, card_images }) => (
           <div className='p-6' key={id}>
@@ -53,6 +53,4 @@ const Home = () => {
 }
 
 export default Home
-
-
 
